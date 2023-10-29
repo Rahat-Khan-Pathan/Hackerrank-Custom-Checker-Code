@@ -21,7 +21,7 @@ code_contents = re.sub(comment_pattern, '', code_contents)
 
 ### Step 3: Convert all macros or typedef definitions
 
-To convert macros or typedef definitions, you can use regular expressions to identify and replace them. For example, if you want to convert macros like `#define`:
+To convert macros or typedef definitions, you can use regular expressions to identify and replace them. For example, if you want to convert macros like `#define` or `typedef`:
 
 - Use regular expressions to identify macro or typedef definitions in the source code.
 - Replace them with their expanded forms or desired types if necessary.
