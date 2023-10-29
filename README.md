@@ -19,15 +19,15 @@ comment_pattern = r'//.*|/\*[\s\S]*?\*/'
 code_contents = re.sub(comment_pattern, '', code_contents)
 ```
 
-### Step 3: Convert all macros or typedef definitions
+### Step 3: Convert all macros or typedef definitions for data types
 
-To convert macros or typedef definitions, you can use regular expressions to identify and replace them. For example, if you want to convert macros like `#define` or `typedef`:
+To convert macros or typedef definitions for data types, you can use regular expressions to identify and replace them. For example, if you want to convert macros like `#define` or `typedef`:
 
 - Use regular expressions to identify macro or typedef definitions in the source code.
 - Replace them with their expanded forms or desired types if necessary.
 
 ```python
-# convert all defines
+# convert all defines for data types only
 define_pattern = r'#\s*define\s+(\w+)\s+([^#\n]+)'
 define_matches = re.findall(define_pattern, code_contents)
 define_dict = {name: value.strip() for name, value in define_matches}
@@ -37,7 +37,7 @@ def replace_macros(match):
         return define_dict[macro_name]
     return match.group(0)
 code_contents = re.sub(r'\b\w+\b', replace_macros, code_contents)
-# convert all typedef definitions
+# convert all typedef definitions of data types only
 typedef_dict = {}
 typedef_pattern = r'typedef\s+([\w\s]+)\s+(\w+);'
 matches = re.findall(typedef_pattern, code_contents, re.DOTALL)

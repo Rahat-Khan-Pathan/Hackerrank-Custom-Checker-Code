@@ -39,7 +39,7 @@ def run_custom_checker(t_obj, r_obj):
             comment_pattern = r'//.*|/\*[\s\S]*?\*/'
             code_contents = re.sub(comment_pattern, '', code_contents) 
 
-            # extract define statements and their definitions
+            # extract define statements and their definitions for data types
             define_pattern = r'#\s*define\s+(\w+)\s+([^#\n]+)'
             define_matches = re.findall(define_pattern, code_contents)
             define_dict = {name: value.strip() for name, value in define_matches}
@@ -50,7 +50,7 @@ def run_custom_checker(t_obj, r_obj):
                 return match.group(0)
             code_contents = re.sub(r'\b\w+\b', replace_macros, code_contents)
 
-            # extract typedef statements and their definitions
+            # extract typedef statements and their definitions for data types
             typedef_dict = {}
             typedef_pattern = r'typedef\s+([\w\s]+)\s+(\w+);'
             matches = re.findall(typedef_pattern, code_contents, re.DOTALL)
