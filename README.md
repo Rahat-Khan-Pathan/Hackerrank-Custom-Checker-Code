@@ -55,7 +55,8 @@ code_contents = re.sub(r'\b(\w+)\b', replace_typedefs, code_contents)
 
 To check if a specific function is present in the source code:
 
-- Use regular expressions or code parsing to search for the function's declaration.
+- Make sure to remove spaces from the line to check all cases.
+- Make sure you know all the valid function definitions.
 - Verify if the function's declaration is found in the source code.
 
 ```python
