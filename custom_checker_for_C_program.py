@@ -35,10 +35,40 @@ def run_custom_checker(t_obj, r_obj):
     try:
         with open(t_obj.submission_code_path, "r") as code_file:
             code_contents = code_file.read()
+            # remove all comments from the source code
             comment_pattern = r'//.*|/\*[\s\S]*?\*/'
-            code_contents = re.sub(comment_pattern, '', code_contents) # remove all comments from the source code
+            code_contents = re.sub(comment_pattern, '', code_contents) 
+
+            # extract define statements and their definitions
+            define_pattern = r'#\s*define\s+(\w+)\s+([^#\n]+)'
+            define_matches = re.findall(define_pattern, code_contents)
+            define_dict = {name: value.strip() for name, value in define_matches}
+            def replace_macros(match):
+                macro_name = match.group(0)
+                if macro_name in define_dict:
+                    return define_dict[macro_name]
+                return match.group(0)
+            code_contents = re.sub(r'\b\w+\b', replace_macros, code_contents)
+
+            # extract typedef statements and their definitions
+            typedef_dict = {}
+            typedef_pattern = r'typedef\s+([\w\s]+)\s+(\w+);'
+            matches = re.findall(typedef_pattern, code_contents, re.DOTALL)
+            for match in matches:
+                typedef_dict[match[1]] = match[0].strip()
+            def replace_typedefs(match):
+                typedef_alias = match.group(1)
+                if typedef_alias in typedef_dict:
+                    return typedef_dict[typedef_alias]
+                return match.group(0)
+            code_contents = re.sub(r'\b(\w+)\b', replace_typedefs, code_contents)
+
             function_name = "intcount_before_one("
-            if function_name in re.sub(r'\s', '', code_contents): # removed all spaces from line to check
+            function_name2 = "longlongcount_before_one("
+            function_name3 = "longlongintcount_before_one("
+            # removed all spaces from line to check
+            code_without_spaces = re.sub(r'\s', '', code_contents)
+            if function_name in code_without_spaces or function_name2 in code_without_spaces or function_name3 in code_without_spaces: 
                 # the function is found in the source code
                 code_lines = code_contents.split('\n')
                 inside_main = False
