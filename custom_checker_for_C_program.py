@@ -63,9 +63,9 @@ def run_custom_checker(t_obj, r_obj):
                 return match.group(0)
             code_contents = re.sub(r'\b(\w+)\b', replace_typedefs, code_contents)
 
-            function_name = "intcount_before_one("
-            function_name2 = "longlongcount_before_one("
-            function_name3 = "longlongintcount_before_one("
+            function_name = "intfunction_name("
+            function_name2 = "longlongfunction_name("
+            function_name3 = "longlongintfunction_name("
             # removed all spaces from line to check
             code_without_spaces = re.sub(r'\s', '', code_contents)
             if function_name in code_without_spaces or function_name2 in code_without_spaces or function_name3 in code_without_spaces: 
@@ -75,7 +75,7 @@ def run_custom_checker(t_obj, r_obj):
                 br_found = False
                 found=False
                 stack = []
-                function_call_name = "count_before_one("
+                function_call_name = "function_name("
                 # now check if the function was called inside the main function 
                 for line in code_lines:
                     if "main(" in line:
@@ -96,10 +96,10 @@ def run_custom_checker(t_obj, r_obj):
                         if '}' in line:
                             stack.pop()
                 if found == False:
-                    r_obj.message = "The 'count_before_one()' function is not called inside the main function."
+                    r_obj.message = "The 'function_name()' function is not called inside the main function."
                     
             else:
-                r_obj.message = "The 'count_before_one()' function is not defined correctly in the code."
+                r_obj.message = "The 'function_name()' function is not defined correctly in the code."
 
     except Exception as e:
         r_obj.message = f"Error reading files or running the submitted code: {str(e)}"
